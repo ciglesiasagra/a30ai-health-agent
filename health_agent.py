@@ -231,7 +231,7 @@ def check_supabase():
             headers={**headers, "Prefer": "count=exact"},
             timeout=15,
         )
-        if resp.status_code != 200:
+        if resp.status_code not in (200, 206):
             problemas.append(f"❌ Supabase no responde: HTTP {resp.status_code}")
             estado_servicios["Supabase"] = f"❌ HTTP {resp.status_code}"
             return
@@ -519,12 +519,20 @@ def check_cloud_schedulers():
         if k.startswith("Scheduler:")
     ]
     has_daily_report_scheduler = any(
-        "daily-report" in name or "daily_report" in name for name in scheduler_names
+        "daily-report" in name or "daily_report" in name or "daily-report-scheduler" in name
+        for name in scheduler_names
+    )
+    has_health_check_scheduler = any(
+        "health" in name for name in scheduler_names
     )
     if not has_daily_report_scheduler:
         problemas.append(
             "❌ No existe Cloud Scheduler para a30ai-daily-report. "
             "El informe diario NO se ejecuta automáticamente."
+        )
+    if not has_health_check_scheduler:
+        problemas.append(
+            "⚠️ No existe Cloud Scheduler para a30ai-health-agent."
         )
 
 
