@@ -1,0 +1,9 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-southwest1-docker.pkg.dev/creedenciales-lovable/a30ai/health-agent', '.']
+
+images:
+  - 'europe-southwest1-docker.pkg.dev/creedenciales-lovable/a30ai/health-agent'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
