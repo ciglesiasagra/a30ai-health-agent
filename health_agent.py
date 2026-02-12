@@ -508,6 +508,8 @@ def check_cloud_schedulers():
                     print(
                         f"  {state_icon} {name}: {schedule} ({region})", flush=True
                     )
+            else:
+                print(f"  ❌ Scheduler API ({region}): HTTP {resp.status_code} - {resp.text[:200]}", flush=True)
 
         except Exception as e:
             print(f"  ⚠️ Error consultando schedulers en {region}: {e}", flush=True)
